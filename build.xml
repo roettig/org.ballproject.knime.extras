@@ -1,6 +1,6 @@
 <project name="pluginbuilder" default="build" basedir=".">
 
-	<property name="pluginname" value="org.ballproject.extras"/>
+	<property name="pluginname" value="org.ballproject.knime.extras"/>
 	<property name="knimeSDKpath" value="/home/roettig/Downloads/eclipse_knime_2.3.1"/>
 	<property name="temp.folder" value="${java.io.tmpdir}/temp.folder_org.ballproject.extra"/>
 	
