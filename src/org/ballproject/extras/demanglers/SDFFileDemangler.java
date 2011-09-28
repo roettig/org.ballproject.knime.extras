@@ -41,15 +41,28 @@ public class SDFFileDemangler implements Demangler
 	@Override
 	public MIMEFileCell mangle(Iterator<DataCell> iter)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		MIMEFileCell ret = new SDFFileCell();
+		String data = concatenate(iter);
+		ret.getDelegate().setContent(data.getBytes());
+		return ret;
 	}
-
+	
+	public static String concatenate(Iterator<DataCell> iter)
+	{
+		StringBuffer sb = new StringBuffer();
+		while(iter.hasNext())
+		{
+			SDFCell cell = (SDFCell) iter.next();
+			sb.append(cell.getContents());
+			sb.append("$$$$"+System.getProperty("line.separator"));
+		}
+		return sb.toString();
+	}
+	
 	@Override
 	public void close()
 	{
 		// TODO Auto-generated method stub
-		
 	}
 	
 	private static class SDFFileDemanglerDelegate implements Iterator<DataCell>
@@ -76,6 +89,19 @@ public class SDFFileDemangler implements Demangler
 			catch (IOException e)
 			{
 				e.printStackTrace();
+			}
+			
+			if(!ready)
+			{
+				try
+				{
+					br.close();
+				} 
+				catch (IOException e)
+				{
+
+					e.printStackTrace();
+				}
 			}
 			return ready;
 		}
@@ -106,30 +132,5 @@ public class SDFFileDemangler implements Demangler
 		{
 			// NOP
 		}
-		
-		public void close()
-		{
-		}
 	}
-
-	public static void main(String[] args) throws IOException
-	{
-		FileReader     in = new FileReader("/home/roettig/coops/BALL/source/TEST/data/QSAR_test.sdf");
-		BufferedReader br = new BufferedReader(in);
-		String line = "";
-		StringBuffer sb = new StringBuffer();
-		while((line=br.readLine())!=null)
-		{
-			sb.append(line+"\n");
-		}
-		String cont = sb.toString();
-		Iterator<DataCell> iter = new SDFFileDemanglerDelegate(cont.getBytes());
-		while(iter.hasNext())
-		{
-			SDFCell sc = (SDFCell) iter.next();
-			System.out.println(sc.getName());
-			System.out.println(sc.getProperty("ACTIVITY"));
-		}
-	}
-
 }

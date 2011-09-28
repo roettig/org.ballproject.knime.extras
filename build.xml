@@ -38,4 +38,25 @@
 		
 		<zip destfile="build/${pluginname}.jar" basedir="${temp.folder}/package"/>
 	</target>
+	
+	<target name="test" depends="build">
+			<junit printsummary="yes" haltonfailure="yes" showoutput="yes">
+				<classpath>
+					<pathelement location="build/${pluginname}.jar"/>
+					<fileset dir="lib">
+						<include name="*.jar"/>
+					</fileset>
+					<fileset dir="${knimeSDKpath}/plugins">
+						<include name="**/*.jar" />
+					</fileset>
+					<fileset dir="/home/roettig/git/GenericKnimeNodes/build">
+						<include name="**/*.jar" />
+					</fileset>
+				</classpath>
+
+				<formatter type="plain"/>
+				<test name="org.ballproject.extras.test.SDFFileDemanglerTest"/>
+			</junit>
+		</target>
+	
 </project>
