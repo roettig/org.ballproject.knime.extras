@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.0"?>
+<plugin>   
+   <extension id="CADDSuite provider" name="CADDSuite provider" point="org.ballproject.knime.base.mime.demangler.DemanglerProvider">
+      <demanglerprovider class="org.ballproject.extras.Provider"/>
+   </extension>
+</plugin>
