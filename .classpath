@@ -10,5 +10,7 @@
 	<classpathentry kind="lib" path="/home/roettig/Downloads/knime_2.3.1/plugins/org.eclipse.core.runtime_3.6.0.v20100505.jar"/>
 	<classpathentry kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="lib" path="lib/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+	<classpathentry kind="lib" path="/home/roettig/Downloads/knime_2.3.1/plugins/org.knime.chem.base_2.3.4.0028950.jar"/>
+	<classpathentry kind="lib" path="/home/roettig/Downloads/knime_2.3.1/plugins/org.knime.chem.types_2.3.4.0028950.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
