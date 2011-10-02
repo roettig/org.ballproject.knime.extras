@@ -25,7 +25,7 @@
 			<compilerarg value="-Xlint:unchecked"/>
 		</javac>
 		
-		<copy todir="${temp.folder}/package" failonerror="true" overwrite="false">
+		<copy todir="${temp.folder}/package" failonerror="true" overwrite="true">
 			<fileset dir="src">
 				<include name="**/*"/>
 			</fileset>
