@@ -12,6 +12,8 @@ import org.ballproject.extras.types.SDFCell;
 import org.ballproject.knime.base.mime.MIMEFileCell;
 import org.ballproject.knime.base.mime.demangler.Demangler;
 
+import org.knime.chem.types.SdfCell;
+import org.knime.chem.types.SdfCellFactory;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataType;
 
@@ -43,7 +45,8 @@ public class SDFFileDemangler implements Demangler
 	{
 		MIMEFileCell ret = new SDFFileCell();
 		String data = concatenate(iter);
-		ret.getDelegate().setContent(data.getBytes());
+		// use tempfile here 
+		//ret.getDelegate().setContent(data.getBytes());
 		return ret;
 	}
 	
@@ -57,12 +60,6 @@ public class SDFFileDemangler implements Demangler
 			sb.append("$$$$"+System.getProperty("line.separator"));
 		}
 		return sb.toString();
-	}
-	
-	@Override
-	public void close()
-	{
-		// TODO Auto-generated method stub
 	}
 	
 	private static class SDFFileDemanglerDelegate implements Iterator<DataCell>
@@ -115,9 +112,10 @@ public class SDFFileDemangler implements Demangler
 			{
 				while((line=br.readLine())!=null)
 				{
+					sb.append(line+System.getProperty("line.separator"));
+					// keep $$$$ in SDF string 
 					if(line.startsWith("$$$$"))
 						break;
-					sb.append(line+System.getProperty("line.separator"));
 				}
 			} 
 			catch (IOException e)
