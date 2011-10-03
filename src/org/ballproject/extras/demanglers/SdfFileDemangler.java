@@ -36,7 +36,7 @@ public class SdfFileDemangler implements Demangler
 	@Override
 	public Iterator<DataCell> demangle(MIMEFileCell cell)
 	{
-		return new SDFFileDemanglerDelegate(cell.getData());
+		return new SdfFileDemanglerDelegate(cell.getData());
 	}
 
 	@Override
@@ -61,13 +61,13 @@ public class SdfFileDemangler implements Demangler
 		return sb.toString();
 	}
 	
-	private static class SDFFileDemanglerDelegate implements Iterator<DataCell>
+	private static class SdfFileDemanglerDelegate implements Iterator<DataCell>
 	{
 		private byte[] data;
 		private BufferedReader br;
 		
 		
-		public SDFFileDemanglerDelegate(byte[] data)
+		public SdfFileDemanglerDelegate(byte[] data)
 		{
 			this.data = data;
 			InputStream    in  = new ByteArrayInputStream(this.data);
