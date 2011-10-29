@@ -1,11 +1,13 @@
 package org.ballproject.extras.demanglers;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.Iterator;
 
 import org.ballproject.extras.types.SDFCell;
@@ -13,42 +15,25 @@ import org.ballproject.knime.base.mime.MIMEFileCell;
 import org.ballproject.knime.base.mime.demangler.Demangler;
 
 import org.knime.chem.types.SdfCell;
-import org.knime.chem.types.SdfCellFactory;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataType;
-
-import org.ballproject.CADDSuite.knime.nodes.mimetypes.SDFFileCell;
+import org.knime.core.data.url.MIMEType;
 
 public class SDFFileDemangler implements Demangler
 {
 
 	@Override
-	public DataType getSourceType()
+	public MIMEType getMIMEType()
 	{
-		return DataType.getType(SDFFileCell.class);
+		return MIMEType.getType("sdf");
 	}
-
+	
 	@Override
 	public DataType getTargetType()
 	{
 		return DataType.getType(SDFCell.class);
 	}
 
-	@Override
-	public Iterator<DataCell> demangle(MIMEFileCell cell)
-	{
-		return new SDFFileDemanglerDelegate(cell.getData());
-	}
-
-	@Override
-	public MIMEFileCell mangle(Iterator<DataCell> iter)
-	{
-		MIMEFileCell ret = new SDFFileCell();
-		String data = concatenate(iter);
-		// use tempfile here 
-		//ret.getDelegate().setContent(data.getBytes());
-		return ret;
-	}
 	
 	public static String concatenate(Iterator<DataCell> iter)
 	{
@@ -64,14 +49,20 @@ public class SDFFileDemangler implements Demangler
 	
 	private static class SDFFileDemanglerDelegate implements Iterator<DataCell>
 	{
-		private byte[] data;
 		private BufferedReader br;
-		
-		
-		public SDFFileDemanglerDelegate(byte[] data)
+		private InputStream in;
+
+		public SDFFileDemanglerDelegate(File infile)
 		{
-			this.data = data;
-			InputStream    in  = new ByteArrayInputStream(this.data);
+			try
+			{
+				in = new FileInputStream(infile);
+			} 
+			catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
+				throw new RuntimeException("could not open input file");
+			}
 			br  = new BufferedReader(new InputStreamReader(in));
 		}
 		
@@ -130,5 +121,17 @@ public class SDFFileDemangler implements Demangler
 		{
 			// NOP
 		}
+	}
+
+	@Override
+	public Iterator<DataCell> demangle(URI file)
+	{
+		return new SDFFileDemanglerDelegate(new File(file));
+	}
+
+	@Override
+	public MIMEFileCell mangle(Iterator<DataCell> iter)
+	{
+		return null;
 	}
 }
